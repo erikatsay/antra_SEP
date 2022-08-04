@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -16,8 +17,8 @@ part3 part3 = new part3();
 
 part4 part4 = new part4();
 /*part4.question1();*/
-part4.question2();
-part4.question3();
+/*part4.question2();*/
+/*part4.question3();*/
 /*part4.question4();*/
 
 public class part3
@@ -277,20 +278,80 @@ public class part4
     }
     public void question2()
     {
-        string sentence = "C# is not C++, and PHP is not Delphi!";
-        string[] subs = sentence.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        //string sentence = "C# is not C++, and PHP is not Delphi!";
+        string sentence = "The quick brown fox jumps over the lazy dog /Yes! Really!!!/.";
         
+        char[] d = { ' ', '.' , ':', ';', '=', '(', ')', '&', '[', ']', '\"', '\'', '\\', '/', '!', '?'};
+        string[] words = sentence.Split(d, StringSplitOptions.RemoveEmptyEntries);
+        string[] punctuations = sentence.Split( words,  StringSplitOptions.RemoveEmptyEntries);
+        
+        Array.Reverse(words);
+
+        int word_ptr = 0;
+        int punctuation_ptr = 0;
+        string ans = "";
+        while (word_ptr<words.Length || punctuation_ptr<punctuations.Length)
+        {
+            ans = ans + words[word_ptr] + punctuations[punctuation_ptr];
+            word_ptr += 1;
+            punctuation_ptr += 1;
+        }
+        
+        Console.WriteLine(ans);
     }
     public void question3()
     {
-        /*string input = "Hi, exe? ABBA! Hog fully a string: ExE.Bob";
+        string input = "Hi, exe? ABBA! Hog fully a string: ExE.Bob";
+        char[] d = { ' ', '.' , ':', ';', '=', '(', ')', '&', '[', ']', '\"', '\'', '\\', '/', '!', '?'};
+        string[] words = input.Split(d, StringSplitOptions.RemoveEmptyEntries);
+        string[] palindromes = new string [] { };
 
-        public string LongestPalindrome(string s)
+        foreach (string word in words)
         {
-            StringBuilder sentence = new StringBuilder(s);
-            
-        }*/
+            bool check = isPalindromes(word);
+            if (check)
+            {
+                palindromes = palindromes.Append(word).ToArray();
+            }
+        }
 
+        bool isPalindromes(string word)
+        {
+            int len = word.Length;
+            int L, R;
+            
+            if (len % 2 == 0)
+            {
+                L = len / 2 -1;
+                R = len / 2 ;
+            }
+            else
+            {
+                L = len/ 2;
+                R = L;
+            }
+
+            while (L >= 0 && R < len)
+            {
+                if (word[L] != word[R])
+                {
+                    return false;
+                }
+
+                L -= 1;
+                R += 1;
+            }
+
+            return true;
+        }
+
+        Array.Sort(palindromes);
+        Console.Write(palindromes[0]);
+        for(int i=1; i<palindromes.Length; i++)
+        {
+            Console.Write(", ");
+            Console.Write(palindromes[i]);
+        }
     }
     public void question4()
     {
